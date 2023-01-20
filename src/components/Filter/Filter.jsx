@@ -1,14 +1,20 @@
 import { Input, Label } from 'components/PhonebookForm/PhonebookForm.styled';
-import { useDispatch, useSelector } from 'react-redux';
+import debounce from 'lodash.debounce';
+import { useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { changeFilter } from 'redux/filterSlice';
-import { getFilter } from 'redux/selectors';
 
 export const Filter = () => {
-  const filter = useSelector(getFilter);
+  const [filter, setFilter] = useState('');
   const dispatch = useDispatch();
 
+  const debounceFilter = useMemo(() => {
+    return debounce(query => dispatch(changeFilter(query)), 500);
+  }, [dispatch]);
+
   const handleFilterInput = ({ target: { value } }) => {
-    dispatch(changeFilter(value));
+    setFilter(value);
+    debounceFilter(value);
   };
 
   return (

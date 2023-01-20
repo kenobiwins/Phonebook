@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import { Avatar, ListItem } from './ContactsListItem.styled';
 import { Button } from 'BaseStyles/BaseStyles.styled';
-import { useDispatch } from 'react-redux';
-import { deleteContact } from 'redux/operations';
+import { useDeleteContactMutation } from 'redux/contactsSlice';
+import { DeleteSpinner } from 'components/Spinner/Spinner';
 
 export const ContactsListItem = ({ name, number, id, avatar }) => {
-  const dispatch = useDispatch();
+  const [deleteContact, { isLoading }] = useDeleteContactMutation();
 
   return (
     <ListItem>
@@ -13,10 +13,10 @@ export const ContactsListItem = ({ name, number, id, avatar }) => {
       {name}: {number}
       <Button
         onClick={() => {
-          dispatch(deleteContact(id));
+          deleteContact(id);
         }}
       >
-        Delete
+        {isLoading ? <DeleteSpinner /> : 'Delete'}
       </Button>
     </ListItem>
   );

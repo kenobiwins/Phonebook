@@ -1,19 +1,18 @@
 import { useState } from 'react';
 import { Form, Label, Input } from './PhonebookForm.styled';
 import { memo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getContacts } from 'redux/selectors';
-import { addContact } from 'redux/operations';
-
 import { Button } from 'BaseStyles/BaseStyles.styled';
+import {
+  useAddContactMutation,
+  useGetAllContactsQuery,
+} from 'redux/contactsSlice';
 
 export const PhonebookForm = memo(() => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
 
-  const dispatch = useDispatch();
-
-  const contacts = useSelector(getContacts);
+  const { data: contacts } = useGetAllContactsQuery();
+  const [addContact] = useAddContactMutation();
 
   const handleInput = ({ target: { name, value } }) => {
     switch (name) {
@@ -34,7 +33,7 @@ export const PhonebookForm = memo(() => {
       return null;
     }
 
-    dispatch(addContact({ ...newUser }));
+    addContact(newUser);
 
     return 'New contact has already in your list';
   };

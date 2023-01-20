@@ -1,19 +1,14 @@
-// import debounce from 'lodash.debounce';
 import { ContactList } from './ContactsList.styled';
 import { ContactsListItem } from 'components/ContactsListItem/ContactsListItem';
-import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllContacts } from 'redux/operations';
-import { getContacts, getFilter } from 'redux/selectors';
+import { Spinner } from 'components/Spinner/Spinner';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { useGetAllContactsQuery } from 'redux/contactsSlice';
+import { getFilter } from 'redux/selectors';
 
 export const ContactsList = () => {
-  const contacts = useSelector(getContacts);
+  const { data: contacts, isLoading, error } = useGetAllContactsQuery();
   const filter = useSelector(getFilter);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchAllContacts());
-  }, [dispatch]);
 
   const visibleContacts = useMemo(() => {
     if (filter === '' || !filter) {
@@ -27,7 +22,9 @@ export const ContactsList = () => {
 
   return (
     <ContactList>
-      {visibleContacts.length > 0 &&
+      {isLoading ? (
+        <Spinner />
+      ) : (
         visibleContacts.map(({ id, name, phone, avatar }) => {
           return (
             <ContactsListItem
@@ -38,7 +35,9 @@ export const ContactsList = () => {
               avatar={avatar}
             />
           );
-        })}
+        })
+      )}
+      {error && <p>Wooops :(</p>}
     </ContactList>
   );
 };
