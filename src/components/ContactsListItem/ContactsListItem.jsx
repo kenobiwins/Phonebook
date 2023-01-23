@@ -1,14 +1,28 @@
 import PropTypes from 'prop-types';
 import { Avatar, ListItem } from './ContactsListItem.styled';
 import { Button } from 'BaseStyles/BaseStyles.styled';
-import { useDeleteContactMutation } from 'redux/contactsSlice';
+import {
+  useDeleteContactMutation,
+  useToggleFavoriteMutation,
+} from 'redux/contactsSlice';
 import { DeleteSpinner } from 'components/Spinner/Spinner';
 
-export const ContactsListItem = ({ name, number, id, avatar }) => {
+export const ContactsListItem = ({ name, number, id, avatar, favorite }) => {
   const [deleteContact, { isLoading }] = useDeleteContactMutation();
+  const [toggleFavorite, { isLoading: FavoriteIsLoading }] =
+    useToggleFavoriteMutation();
 
   return (
     <ListItem>
+      <label>
+        {!FavoriteIsLoading && (
+          <input
+            type="checkbox"
+            checked={favorite}
+            onChange={() => toggleFavorite({ id, favorite: !favorite })}
+          />
+        )}
+      </label>
       <Avatar src={avatar} alt={`${name} photo`} />
       {name}: {number}
       <Button

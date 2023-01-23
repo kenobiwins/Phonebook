@@ -1,17 +1,24 @@
 import { ContactList } from './ContactsList.styled';
 import { ContactsListItem } from 'components/ContactsListItem/ContactsListItem';
-import { Spinner } from 'components/Spinner/Spinner';
+// import { Spinner } from 'components/Spinner/Spinner';
+import { statusFilters } from 'constants/statusFilter.constants';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useGetAllContactsQuery } from 'redux/contactsSlice';
-import { getFilter } from 'redux/selectors';
+import {
+  getContactsByAlphabetStatus,
+  getFilter,
+  getFilterStatus,
+} from 'redux/selectors';
 
 export const ContactsList = () => {
   const { data: contacts, isLoading, error } = useGetAllContactsQuery();
   const filter = useSelector(getFilter);
+  const filterStatus = useSelector(getFilterStatus);
+  const alphabetStatus = useSelector(getContactsByAlphabetStatus);
 
   const visibleContacts = useMemo(() => {
-    if (filter === '' || !filter) {
+    if (filter === '') {
       return contacts;
     } else {
       return contacts.filter(el => {
@@ -20,23 +27,42 @@ export const ContactsList = () => {
     }
   }, [contacts, filter]);
 
+  const filteredContacts = (contacts, filter) => {
+    if (alphabetStatus) {
+      contacts = [...contacts].sort((firstContact, secondContact) =>
+        firstContact.name.localeCompare(secondContact.name)
+      );
+    }
+
+    switch (filter) {
+      case statusFilters.all:
+        return contacts;
+      case statusFilters.favorite:
+        return contacts.filter(contact => contact.favorite);
+
+      default:
+        return contacts;
+    }
+  };
+
   return (
     <ContactList>
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        visibleContacts.map(({ id, name, phone, avatar }) => {
-          return (
-            <ContactsListItem
-              key={id}
-              name={name}
-              id={id}
-              number={phone}
-              avatar={avatar}
-            />
-          );
-        })
-      )}
+      {!isLoading &&
+        filteredContacts(visibleContacts, filterStatus).map(
+          ({ id, name, phone, avatar, favorite }) => {
+            return (
+              <ContactsListItem
+                key={id}
+                name={name}
+                id={id}
+                number={phone}
+                avatar={avatar}
+                favorite={favorite}
+              />
+            );
+          }
+        )}
+
       {error && <p>Wooops :(</p>}
     </ContactList>
   );

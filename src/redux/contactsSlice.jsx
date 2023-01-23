@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
+// https://connections-api.herokuapp.com/
 export const contactsApi = createApi({
   reducerPath: 'contacts',
   baseQuery: fetchBaseQuery({
@@ -29,6 +29,17 @@ export const contactsApi = createApi({
       }),
       invalidatesTags: ['contacts'],
     }),
+    ToggleFavorite: builder.mutation({
+      query: data => {
+        const { id, favorite } = data;
+        return {
+          url: `/contacts/${id}`,
+          method: 'PUT',
+          body: { favorite },
+        };
+      },
+      invalidatesTags: ['contacts'],
+    }),
   }),
 });
 
@@ -37,4 +48,5 @@ export const {
   useGetContactByIdQuery,
   useAddContactMutation,
   useDeleteContactMutation,
+  useToggleFavoriteMutation,
 } = contactsApi;

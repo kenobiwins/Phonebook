@@ -1,12 +1,22 @@
 import { Input, Label } from 'components/PhonebookForm/PhonebookForm.styled';
 import debounce from 'lodash.debounce';
 import { useMemo, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { changeFilter } from 'redux/filterSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  changeFilter,
+  setStatusFilter,
+  toggleAlphabetStatus,
+} from 'redux/filterSlice';
+import { statusFilters } from 'constants/statusFilter.constants';
+import { FilterButton } from 'components/FilterButton/FilterButton';
+import { getContactsByAlphabetStatus, getFilterStatus } from 'redux/selectors';
 
 export const Filter = () => {
   const [filter, setFilter] = useState('');
   const dispatch = useDispatch();
+
+  const FilterStatus = useSelector(getFilterStatus);
+  const alphabetStatus = useSelector(getContactsByAlphabetStatus);
 
   const debounceFilter = useMemo(() => {
     return debounce(query => dispatch(changeFilter(query)), 500);
@@ -17,9 +27,37 @@ export const Filter = () => {
     debounceFilter(value);
   };
 
+  const handleStatusFilter = filter => dispatch(setStatusFilter(filter));
+
+  const handleAlphabetStatus = () => {
+    return dispatch(toggleAlphabetStatus(!alphabetStatus));
+  };
+
   return (
     <>
       <Label htmlFor="filter">Find contacts by name</Label>
+
+      <FilterButton
+        type="button"
+        selected={FilterStatus === statusFilters.all}
+        onClick={() => handleStatusFilter(statusFilters.all)}
+      >
+        All
+      </FilterButton>
+      <FilterButton
+        type="button"
+        selected={FilterStatus === statusFilters.favorite}
+        onClick={() => handleStatusFilter(statusFilters.favorite)}
+      >
+        Favorite
+      </FilterButton>
+
+      <input
+        type="checkbox"
+        checked={alphabetStatus}
+        onChange={handleAlphabetStatus}
+      />
+
       <Input
         autoComplete="off"
         id="filter"
