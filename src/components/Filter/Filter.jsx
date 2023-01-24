@@ -6,10 +6,13 @@ import {
   changeFilter,
   setStatusFilter,
   toggleAlphabetStatus,
-} from 'redux/filterSlice';
+} from 'redux/filter/filterSlice';
 import { statusFilters } from 'constants/statusFilter.constants';
 import { FilterButton } from 'components/FilterButton/FilterButton';
-import { getContactsByAlphabetStatus, getFilterStatus } from 'redux/selectors';
+import {
+  getContactsByAlphabetStatus,
+  getFilterStatus,
+} from 'redux/filter/selectors';
 
 export const Filter = () => {
   const [filter, setFilter] = useState('');
@@ -49,7 +52,7 @@ export const Filter = () => {
         selected={FilterStatus === statusFilters.favorite}
         onClick={() => handleStatusFilter(statusFilters.favorite)}
       >
-        Favorite
+        Fav
       </FilterButton>
 
       <input

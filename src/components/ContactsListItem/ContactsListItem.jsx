@@ -4,7 +4,7 @@ import { Button } from 'BaseStyles/BaseStyles.styled';
 import {
   useDeleteContactMutation,
   useToggleFavoriteMutation,
-} from 'redux/contactsSlice';
+} from 'redux/contacts/contactsSlice';
 import { DeleteSpinner } from 'components/Spinner/Spinner';
 
 export const ContactsListItem = ({ name, number, id, avatar, favorite }) => {

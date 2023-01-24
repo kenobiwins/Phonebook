@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-// https://connections-api.herokuapp.com/
+
 export const contactsApi = createApi({
   reducerPath: 'contacts',
   baseQuery: fetchBaseQuery({
@@ -31,6 +31,7 @@ export const contactsApi = createApi({
     }),
     ToggleFavorite: builder.mutation({
       query: data => {
+        console.log(data);
         const { id, favorite } = data;
         return {
           url: `/contacts/${id}`,

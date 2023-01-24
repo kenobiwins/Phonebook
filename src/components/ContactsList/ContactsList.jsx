@@ -4,12 +4,12 @@ import { ContactsListItem } from 'components/ContactsListItem/ContactsListItem';
 import { statusFilters } from 'constants/statusFilter.constants';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { useGetAllContactsQuery } from 'redux/contactsSlice';
+import { useGetAllContactsQuery } from 'redux/contacts/contactsSlice';
 import {
   getContactsByAlphabetStatus,
   getFilter,
   getFilterStatus,
-} from 'redux/selectors';
+} from 'redux/filter/selectors';
 
 export const ContactsList = () => {
   const { data: contacts, isLoading, error } = useGetAllContactsQuery();

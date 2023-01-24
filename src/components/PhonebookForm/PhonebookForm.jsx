@@ -5,7 +5,7 @@ import { Button } from 'BaseStyles/BaseStyles.styled';
 import {
   useAddContactMutation,
   useGetAllContactsQuery,
-} from 'redux/contactsSlice';
+} from 'redux/contacts/contactsSlice';
 
 export const PhonebookForm = memo(() => {
   const [name, setName] = useState('');
