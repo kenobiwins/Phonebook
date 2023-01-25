@@ -2,18 +2,18 @@ import { useAuth } from 'hooks/useAuth';
 import { Suspense } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 
-const NavItems = [
-  {
-    name: 'Home',
-    path: '/',
-  },
-  { name: 'Contacts', path: '/contacts' },
-  { name: 'Register', path: '/register' },
-  { name: 'Login', path: '/login' },
-];
+// const NavItems = [
+//   {
+//     name: 'Home',
+//     path: '/',
+//   },
+//   { name: 'Contacts', path: '/contacts' },
+//   { name: 'Register', path: '/register' },
+//   { name: 'Login', path: '/login' },
+// ];
 
 export const SharedLayout = () => {
-  const { isLoggedIn } = useAuth();
+  // const { isLoggedIn } = useAuth();
   return (
     <>
       <header>
