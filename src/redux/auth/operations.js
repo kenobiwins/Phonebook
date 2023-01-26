@@ -1,24 +1,24 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-const contactsApi = axios.create({
-  baseURL: 'https://connections-api.herokuapp.com/',
-});
-// axios.defaults.baseURL = 'https://connections-api.herokuapp.com/';
+// export const contactsConnectionsApi = axios.create({
+//   baseURL: 'https://connections-api.herokuapp.com/',
+// });
+axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
 
 const setAuthHeader = token => {
-  contactsApi.defaults.headers.common.Authorization = `Bearer ${token}`;
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
 
 const clearAuthHeader = () => {
-  contactsApi.defaults.headers.common.Authorization = '';
+  axios.defaults.headers.common.Authorization = '';
 };
 
 export const register = createAsyncThunk(
   'auth/register',
   async (credentials, thunkAPI) => {
     try {
-      const { data } = await contactsApi.post('/users/signup', credentials);
+      const { data } = await axios.post('/users/signup', credentials);
       setAuthHeader(data.token);
 
       return data;
@@ -32,7 +32,7 @@ export const logIn = createAsyncThunk(
   'auth/login',
   async (credentials, thunkAPI) => {
     try {
-      const { data } = await contactsApi.post('/users/login', credentials);
+      const { data } = await axios.post('/users/login', credentials);
       setAuthHeader(data.token);
 
       return data;
@@ -44,7 +44,7 @@ export const logIn = createAsyncThunk(
 
 export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
-    await contactsApi.post('/users/logout');
+    await axios.post('/users/logout');
 
     clearAuthHeader();
   } catch (error) {
@@ -63,7 +63,7 @@ export const refreshUser = createAsyncThunk(
     }
     try {
       setAuthHeader(persistedToken);
-      const { data } = await contactsApi.get('/users/current');
+      const { data } = await axios.get('/users/current');
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

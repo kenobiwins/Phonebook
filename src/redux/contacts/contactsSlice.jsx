@@ -1,24 +1,51 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import axios from 'axios';
+
+const axiosBaseQuery =
+  ({ baseUrl } = { baseUrl: '' }) =>
+  async ({ url, method, data, params }) => {
+    try {
+      const result = await axios({
+        url: baseUrl + url,
+        method,
+        data,
+        params,
+      });
+      return { data: result.data };
+    } catch (axiosError) {
+      let err = axiosError;
+      return {
+        error: {
+          status: err.response?.status,
+          data: err.response?.data || err.message,
+        },
+      };
+    }
+  };
 
 export const contactsApi = createApi({
   reducerPath: 'contacts',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'https://63c81595e52516043f4b4ffc.mockapi.io',
+  baseQuery: axiosBaseQuery({
+    baseUrl: 'https://connections-api.herokuapp.com',
   }),
   tagTypes: ['contacts'],
   endpoints: builder => ({
     getAllContacts: builder.query({
-      query: () => '/contacts',
+      query: () => ({
+        url: '/contacts',
+      }),
       providesTags: ['contacts'],
     }),
-    getContactById: builder.query({
-      query: id => `/contacts/${id}`,
-    }),
+    // getContactById: builder.query({
+    //   query: id => ({
+    //     url: `/contacts/${id}`,
+    //   }),
+    // }),
     addContact: builder.mutation({
       query: contact => ({
         url: '/contacts',
         method: 'POST',
-        body: contact,
+        data: contact,
       }),
       invalidatesTags: ['contacts'],
     }),
@@ -29,25 +56,36 @@ export const contactsApi = createApi({
       }),
       invalidatesTags: ['contacts'],
     }),
-    ToggleFavorite: builder.mutation({
-      query: data => {
-        console.log(data);
-        const { id, favorite } = data;
+    editContact: builder.mutation({
+      query: ({ id, data }) => {
+        console.log(id, data);
         return {
           url: `/contacts/${id}`,
-          method: 'PUT',
-          body: { favorite },
+          method: 'PATCH',
+          data,
         };
       },
       invalidatesTags: ['contacts'],
     }),
+    // ToggleFavorite: builder.mutation({
+    //   query: data => {
+    //     const { id, favorite } = data;
+    //     return {
+    //       url: `/contacts/${id}`,
+    //       method: 'PATCH',
+    //       data: { favorite },
+    //     };
+    //   },
+    //   invalidatesTags: ['contacts'],
+    // }),
   }),
 });
 
 export const {
   useGetAllContactsQuery,
-  useGetContactByIdQuery,
+  // useGetContactByIdQuery,
   useAddContactMutation,
   useDeleteContactMutation,
-  useToggleFavoriteMutation,
+  useEditContactMutation,
+  // useToggleFavoriteMutation,
 } = contactsApi;

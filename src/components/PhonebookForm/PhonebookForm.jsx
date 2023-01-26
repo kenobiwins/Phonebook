@@ -9,7 +9,7 @@ import {
 
 export const PhonebookForm = memo(() => {
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [number, setPhone] = useState('');
 
   const { data: contacts } = useGetAllContactsQuery();
   const [addContact] = useAddContactMutation();
@@ -40,7 +40,7 @@ export const PhonebookForm = memo(() => {
 
   const submitForm = e => {
     e.preventDefault();
-    const newUser = handleSubmit({ name, phone });
+    const newUser = handleSubmit({ name, number, favorite: false });
 
     if (newUser === null) {
       return;
@@ -73,7 +73,7 @@ export const PhonebookForm = memo(() => {
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
         required
         onChange={handleInput}
-        value={phone}
+        value={number}
       />
       <Button type="submit">Add contact</Button>
     </Form>

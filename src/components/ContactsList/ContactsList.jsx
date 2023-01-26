@@ -13,6 +13,7 @@ import {
 
 export const ContactsList = () => {
   const { data: contacts, isLoading, error } = useGetAllContactsQuery();
+
   const filter = useSelector(getFilter);
   const filterStatus = useSelector(getFilterStatus);
   const alphabetStatus = useSelector(getContactsByAlphabetStatus);
@@ -49,15 +50,15 @@ export const ContactsList = () => {
     <ContactList>
       {!isLoading &&
         filteredContacts(visibleContacts, filterStatus).map(
-          ({ id, name, phone, avatar, favorite }) => {
+          ({ id, name, number }) => {
             return (
               <ContactsListItem
                 key={id}
                 name={name}
                 id={id}
-                number={phone}
-                avatar={avatar}
-                favorite={favorite}
+                number={number}
+                // avatar={avatar}
+                // favorite={favorite}
               />
             );
           }

@@ -1,37 +1,45 @@
 import PropTypes from 'prop-types';
 import { Avatar, ListItem } from './ContactsListItem.styled';
-import { Button } from 'BaseStyles/BaseStyles.styled';
-import {
-  useDeleteContactMutation,
-  useToggleFavoriteMutation,
-} from 'redux/contacts/contactsSlice';
-import { DeleteSpinner } from 'components/Spinner/Spinner';
+import { defaultAvatar } from 'constants/defaultAvatar';
+import { useDeleteContactMutation } from 'redux/contacts/contactsSlice';
+import { IconButton, Spinner } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
 
-export const ContactsListItem = ({ name, number, id, avatar, favorite }) => {
+export const ContactsListItem = ({ name, number, id }) => {
   const [deleteContact, { isLoading }] = useDeleteContactMutation();
-  const [toggleFavorite, { isLoading: FavoriteIsLoading }] =
-    useToggleFavoriteMutation();
 
   return (
     <ListItem>
-      <label>
-        {!FavoriteIsLoading && (
-          <input
-            type="checkbox"
-            checked={favorite}
-            onChange={() => toggleFavorite({ id, favorite: !favorite })}
-          />
-        )}
-      </label>
-      <Avatar src={avatar} alt={`${name} photo`} />
+      <Avatar src={defaultAvatar} alt={`${name} photo`} />
       {name}: {number}
-      <Button
+      <IconButton
+        variant="outline"
+        colorScheme="cyan"
+        aria-label="Delete contact"
+        icon={
+          isLoading ? (
+            <Spinner size="md" boxSize={4} />
+          ) : (
+            <DeleteIcon size="md" boxSize={4} />
+          )
+        }
         onClick={() => {
           deleteContact(id);
         }}
-      >
-        {isLoading ? <DeleteSpinner /> : 'Delete'}
-      </Button>
+      />
+      {/* <IconButton
+        size="md"
+        icon={
+          isLoading ? (
+            <Spinner size="md" boxSize={4} />
+          ) : (
+            <DeleteIcon boxSize={4} />
+          )
+        }
+        onClick={() => {
+          deleteContact(id);
+        }}
+      /> */}
     </ListItem>
   );
 };

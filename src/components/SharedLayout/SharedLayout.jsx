@@ -1,29 +1,17 @@
-// import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks/useAuth';
+import { AuthNavigation } from 'components/AuthNavigation/AuthNavigation';
+import { Navigation } from 'components/Navigation/Navigation';
+import { UserMenu } from 'components/UserMenu/UserMenu';
 import { Suspense } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
-
-// const NavItems = [
-//   {
-//     name: 'Home',
-//     path: '/',
-//   },
-//   { name: 'Contacts', path: '/contacts' },
-//   { name: 'Register', path: '/register' },
-//   { name: 'Login', path: '/login' },
-// ];
+import { Outlet } from 'react-router-dom';
 
 export const SharedLayout = () => {
-  // const { isLoggedIn } = useAuth();
+  const { isLoggedIn } = useAuth();
   return (
     <>
       <header>
-        <nav>
-          <NavLink to={'/'}>Home</NavLink>
-          <NavLink to={'/contacts'}>Contacts</NavLink>
-
-          <NavLink to={'/register'}>Register</NavLink>
-          <NavLink to={'/login'}>Log in</NavLink>
-        </nav>
+        <Navigation />
+        {isLoggedIn ? <UserMenu /> : <AuthNavigation />}
       </header>
       <Suspense fallback={null}>
         <Outlet />

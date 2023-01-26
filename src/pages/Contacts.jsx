@@ -2,6 +2,7 @@ import { ContactsList } from 'components/ContactsList/ContactsList';
 import { Filter } from 'components/Filter/Filter';
 import { PhonebookForm } from 'components/PhonebookForm/PhonebookForm';
 import { Section } from 'components/Section/Section';
+import { Outlet } from 'react-router-dom';
 
 export const Contacts = () => {
   return (
@@ -13,6 +14,7 @@ export const Contacts = () => {
         <Filter />
         <ContactsList />
       </Section>
+      <Outlet />
     </>
   );
 };

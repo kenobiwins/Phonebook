@@ -4,21 +4,21 @@ import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   changeFilter,
-  setStatusFilter,
+  // setStatusFilter,
   toggleAlphabetStatus,
 } from 'redux/filter/filterSlice';
-import { statusFilters } from 'constants/statusFilter.constants';
-import { FilterButton } from 'components/FilterButton/FilterButton';
+// import { statusFilters } from 'constants/statusFilter.constants';
+// import { FilterButton } from 'components/FilterButton/FilterButton';
 import {
   getContactsByAlphabetStatus,
-  getFilterStatus,
+  // getFilterStatus,
 } from 'redux/filter/selectors';
 
 export const Filter = () => {
   const [filter, setFilter] = useState('');
   const dispatch = useDispatch();
 
-  const FilterStatus = useSelector(getFilterStatus);
+  // const FilterStatus = useSelector(getFilterStatus);
   const alphabetStatus = useSelector(getContactsByAlphabetStatus);
 
   const debounceFilter = useMemo(() => {
@@ -30,7 +30,7 @@ export const Filter = () => {
     debounceFilter(value);
   };
 
-  const handleStatusFilter = filter => dispatch(setStatusFilter(filter));
+  // const handleStatusFilter = filter => dispatch(setStatusFilter(filter));
 
   const handleAlphabetStatus = () => {
     return dispatch(toggleAlphabetStatus(!alphabetStatus));
@@ -40,7 +40,7 @@ export const Filter = () => {
     <>
       <Label htmlFor="filter">Find contacts by name</Label>
 
-      <FilterButton
+      {/* <FilterButton
         type="button"
         selected={FilterStatus === statusFilters.all}
         onClick={() => handleStatusFilter(statusFilters.all)}
@@ -53,9 +53,11 @@ export const Filter = () => {
         onClick={() => handleStatusFilter(statusFilters.favorite)}
       >
         Fav
-      </FilterButton>
+      </FilterButton> */}
 
+      <Label htmlFor="alphabetCheckbox">to Alphabet</Label>
       <input
+        id="alphabetCheckbox"
         type="checkbox"
         checked={alphabetStatus}
         onChange={handleAlphabetStatus}

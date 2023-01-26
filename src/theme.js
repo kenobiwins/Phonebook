@@ -1,3 +1,6 @@
+import { extendBaseTheme } from '@chakra-ui/react';
+import chakraTheme from '@chakra-ui/theme';
+
 export const theme = {
   colors: {
     black: '#000',
@@ -47,3 +50,11 @@ export const theme = {
     round: '50%',
   },
 };
+
+const { Button } = chakraTheme.components;
+
+export const chakraThemePallets = extendBaseTheme({
+  components: {
+    Button,
+  },
+});
