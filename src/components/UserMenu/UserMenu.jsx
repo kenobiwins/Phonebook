@@ -30,7 +30,7 @@ export const UserMenu = () => {
               p={2}
               borderRadius={'22px'}
               bg="transparent"
-              _hover={{ bg: 'orange.200' }}
+              _hover={{ bg: 'transparent' }}
             >
               {' '}
               <Avatar justifyContent={'center'} boxSize={31} bg={'blue.400'} />
@@ -39,9 +39,10 @@ export const UserMenu = () => {
           <Portal>
             <PopoverContent w="160px" p={4}>
               <PopoverArrow />
-              <PopoverCloseButton />
-              <PopoverBody width="100%">
+
+              <PopoverBody>
                 <Button
+                  w={'100%'}
                   bg={'orange.200'}
                   color={'blue.400'}
                   onClick={handleLogOut}

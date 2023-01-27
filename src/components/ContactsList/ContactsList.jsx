@@ -51,7 +51,7 @@ export const ContactsList = ({ redirect }) => {
       {!isLoading && contacts.length === 0 && (
         <>
           <Text textAlign="center" fontSize="3xl">
-            make more friends
+            make more friends 🤓
           </Text>
           <Button onClick={redirect} variant="link" as={NavLink} to="/contacts">
             Sure!
