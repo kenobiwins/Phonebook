@@ -20,7 +20,14 @@ export const LoginForm = () => {
     const isValid = await userLogInSchema.isValid(user);
 
     if (!isValid) {
-      console.log('invalide');
+      toast({
+        title: `Invalid properties`,
+        description: 'Incorrect login or password.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top-right',
+      });
       return;
     }
 

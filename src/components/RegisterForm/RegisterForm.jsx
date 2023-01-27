@@ -21,20 +21,27 @@ export const RegisterForm = () => {
     const isValid = await userRegestrationSchema.isValid(newUser);
 
     if (!isValid) {
-      console.log('invalide');
-      return;
+      return toast({
+        title: `Invalid properties`,
+        description:
+          'Login must be as email,and password should includes minimum 8 symbols and maximum 16',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top-right',
+      });
     }
 
     dispatch(register({ ...newUser }))
       .then(data => {
         if (data.error) {
-          throw new Error('woops');
+          throw new Error('Wooops');
         }
         return toast({
           title: 'Account created.',
           description: `We've created your account for you ${data.payload.user.name}.`,
           status: 'success',
-          duration: 9000,
+          duration: 3000,
           isClosable: true,
           position: 'top-right',
         });
@@ -44,7 +51,7 @@ export const RegisterForm = () => {
           title: `${e.message}`,
           description: "We've some problems.",
           status: 'error',
-          duration: 9000,
+          duration: 3000,
           isClosable: true,
           position: 'top-right',
         });

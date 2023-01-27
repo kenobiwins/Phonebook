@@ -19,6 +19,7 @@ import {
   useEditContactMutation,
   useGetAllContactsQuery,
 } from 'redux/contacts/contactsSlice';
+import { userContactSchema } from 'Validations/UserValidation';
 
 export function EditContact({ isOpen, onClose, contact }) {
   const initialRef = useRef(null);
@@ -44,9 +45,22 @@ export function EditContact({ isOpen, onClose, contact }) {
     }
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const newUser = { data: { name, number }, id: contact.id };
+    const isValid = await userContactSchema.isValid({ ...newUser.data });
+
+    if (!isValid) {
+      setDisabled(true);
+      return toast({
+        title: `Invalid properties`,
+        description: `Number must be shorted than 12 symbols and biggest than 4`,
+        status: 'info',
+        duration: 5000,
+        isClosable: true,
+        position: 'top-right',
+      });
+    }
 
     const shouldUpdate = contacts.some(
       el =>
@@ -60,7 +74,6 @@ export function EditContact({ isOpen, onClose, contact }) {
       return;
     }
 
-    setDisabled(true);
     return toast({
       title: `Wooops`,
       description: `Do something with ${name}`,

@@ -55,7 +55,14 @@ export const PhonebookForm = memo(() => {
     const newUser = await handleSubmit({ name, number });
 
     if (newUser === 'invalid') {
-      console.log('invalid');
+      toast({
+        title: `Invalid properties`,
+        description: `Number must be shorted than 12 symbols and biggest than 4`,
+        status: 'info',
+        duration: 5000,
+        isClosable: true,
+        position: 'top-right',
+      });
       return;
     }
     if (newUser === null) {
