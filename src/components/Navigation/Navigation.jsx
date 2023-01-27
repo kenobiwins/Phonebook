@@ -6,11 +6,11 @@ export const Navigation = () => {
   const { isLoggedIn } = useAuth();
   return (
     <nav>
-      <Stack as="ul" direction="row" spacing={4}>
+      <Stack as="ul" direction="row" spacing={1}>
         <li>
           <Link
             as={NavLink}
-            p={1}
+            p={2}
             borderRadius={'16px'}
             to={'/'}
             _hover={{ bg: 'orange.200', color: 'blue.400' }}
@@ -23,7 +23,7 @@ export const Navigation = () => {
           {isLoggedIn && (
             <Link
               as={NavLink}
-              p={1}
+              p={2}
               borderRadius={'16px'}
               to={'/contacts'}
               _hover={{ bg: 'orange.200', color: 'blue.400' }}

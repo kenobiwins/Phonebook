@@ -48,7 +48,6 @@ export const LoginForm = () => {
           position: 'top-right',
         });
       });
-    e.currentTarget.reset();
   };
 
   return (
