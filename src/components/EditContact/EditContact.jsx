@@ -10,6 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useRef } from 'react';
@@ -20,13 +21,18 @@ import {
 
 export function EditContact({ isOpen, onClose, contact }) {
   const initialRef = useRef(null);
+
   const { data: contacts } = useGetAllContactsQuery();
   const [editContact] = useEditContactMutation();
 
   const [name, setName] = useState(contact.name);
   const [number, setNumber] = useState(contact.number);
+  const [disabled, setDisabled] = useState(true);
+
+  const toast = useToast();
 
   const handleInput = ({ target: { name, value } }) => {
+    setDisabled(false);
     switch (name) {
       case 'name':
         return setName(value);
@@ -52,7 +58,16 @@ export function EditContact({ isOpen, onClose, contact }) {
 
       return;
     }
-    return null;
+
+    setDisabled(true);
+    return toast({
+      title: `Wooops`,
+      description: `Do something with ${name}`,
+      status: 'info',
+      duration: 5000,
+      isClosable: true,
+      position: 'top-right',
+    });
   };
 
   return (
@@ -98,7 +113,13 @@ export function EditContact({ isOpen, onClose, contact }) {
           </ModalBody>
 
           <ModalFooter>
-            <Button type="submit" colorScheme="orange" variant="ghost" mr={3}>
+            <Button
+              isDisabled={disabled}
+              type="submit"
+              colorScheme="orange"
+              variant="ghost"
+              mr={3}
+            >
               Save
             </Button>
             <Button colorScheme="blue" variant="ghost" onClick={onClose}>
