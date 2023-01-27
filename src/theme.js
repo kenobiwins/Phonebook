@@ -1,5 +1,4 @@
-import { extendBaseTheme } from '@chakra-ui/react';
-import chakraTheme from '@chakra-ui/theme';
+import { extendTheme } from '@chakra-ui/react';
 
 export const theme = {
   colors: {
@@ -12,8 +11,8 @@ export const theme = {
     backgroundSecondary: '#e0e4e8',
     backgroundForm: 'antiquewhite',
     borderColor: '#b8b2b2b3',
-    primary: '#07c',
-    secondary: '#76a5d4',
+    primary: '#4299e1',
+    secondary: '#fbd38d',
     accent: '#609',
     muted: '#f6f6f6',
   },
@@ -51,10 +50,21 @@ export const theme = {
   },
 };
 
-const { Button } = chakraTheme.components;
-
-export const chakraThemePallets = extendBaseTheme({
-  components: {
-    Button,
+const colors = {
+  brand: {
+    900: '#024fc9',
+    800: '#146af5',
+    700: '#2977f2',
+    600: '#337df2',
+    500: '#4287f5',
   },
+};
+const fonts = {
+  body: 'Tahoma',
+  heading: 'Courier New',
+};
+
+export const chakraThemePallets = extendTheme({
+  colors,
+  fonts,
 });

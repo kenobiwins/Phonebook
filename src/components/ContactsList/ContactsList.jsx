@@ -1,9 +1,9 @@
-import { ContactList } from './ContactsList.styled';
+import { Box, Button, Text } from '@chakra-ui/react';
 import { ContactsListItem } from 'components/ContactsListItem/ContactsListItem';
-// import { Spinner } from 'components/Spinner/Spinner';
 import { statusFilters } from 'constants/statusFilter.constants';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import { useGetAllContactsQuery } from 'redux/contacts/contactsSlice';
 import {
   getContactsByAlphabetStatus,
@@ -11,7 +11,7 @@ import {
   getFilterStatus,
 } from 'redux/filter/selectors';
 
-export const ContactsList = () => {
+export const ContactsList = ({ redirect }) => {
   const { data: contacts, isLoading, error } = useGetAllContactsQuery();
 
   const filter = useSelector(getFilter);
@@ -47,7 +47,17 @@ export const ContactsList = () => {
   };
 
   return (
-    <ContactList>
+    <Box as="ul" display="grid" gap="4px">
+      {!isLoading && contacts.length === 0 && (
+        <>
+          <Text textAlign="center" fontSize="3xl">
+            make more friends
+          </Text>
+          <Button onClick={redirect} variant="link" as={NavLink} to="/contacts">
+            Sure!
+          </Button>
+        </>
+      )}
       {!isLoading &&
         filteredContacts(visibleContacts, filterStatus).map(
           ({ id, name, number }) => {
@@ -65,6 +75,6 @@ export const ContactsList = () => {
         )}
 
       {error && <p>Wooops :(</p>}
-    </ContactList>
+    </Box>
   );
 };

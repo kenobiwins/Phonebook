@@ -1,8 +1,11 @@
+import { Button, Container, Input, useToast } from '@chakra-ui/react';
+import { PasswordInput } from 'components/PasswordInput/PasswordInput';
 import { useDispatch } from 'react-redux';
 import { register } from 'redux/auth/operations';
 
 export const RegisterForm = () => {
   const dispatch = useDispatch();
+  const toast = useToast();
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -14,26 +17,78 @@ export const RegisterForm = () => {
         email: email.value,
         password: password.value,
       })
-    );
-
+    )
+      .then(data => {
+        if (data.error) {
+          throw new Error('woops');
+        }
+        return toast({
+          title: 'Account created.',
+          description: `We've created your account for you ${data.payload.user.name}.`,
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+          position: 'top-right',
+        });
+      })
+      .catch(e => {
+        toast({
+          title: `${e.message}`,
+          description: "We've some problems.",
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+          position: 'top-right',
+        });
+      });
     e.currentTarget.reset();
   };
 
   return (
-    <form onSubmit={handleSubmit} autoComplete="off">
-      <label>
-        Username
-        <input type="text" name="name" />
-      </label>
-      <label>
-        Email
-        <input type="email" name="email" />
-      </label>
-      <label>
-        Password
-        <input type="password" name="password" />
-      </label>
-      <button type="submit">Register</button>
-    </form>
+    <Container
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      maxW="md"
+      mr="auto"
+      ml="auto"
+      p={3}
+      color="blue.400"
+    >
+      <form onSubmit={handleSubmit} autoComplete="off">
+        <Input
+          _focusVisible={{
+            borderColor: 'orange.200',
+            boxShadow: '0px 1px 0px 0px #fbd38d',
+          }}
+          pl="1.5rem"
+          type="text"
+          name="name"
+          variant="flushed"
+          placeholder="Username"
+        />
+        <Input
+          _focusVisible={{
+            borderColor: 'orange.200',
+            boxShadow: '0px 1px 0px 0px #fbd38d',
+          }}
+          pl="1.5rem"
+          type="email"
+          name="email"
+          variant="flushed"
+          placeholder="Email"
+        />
+        <PasswordInput name={'password'} />
+        <Button
+          w={'sm'}
+          m={'auto'}
+          type="submit"
+          colorScheme="orange"
+          variant="ghost"
+        >
+          Register
+        </Button>
+      </form>
+    </Container>
   );
 };

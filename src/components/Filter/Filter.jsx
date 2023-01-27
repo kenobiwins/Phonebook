@@ -1,25 +1,16 @@
-import { Input, Label } from 'components/PhonebookForm/PhonebookForm.styled';
+import { CloseIcon } from '@chakra-ui/icons';
+import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 import debounce from 'lodash.debounce';
 import { useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  changeFilter,
-  // setStatusFilter,
-  toggleAlphabetStatus,
-} from 'redux/filter/filterSlice';
-// import { statusFilters } from 'constants/statusFilter.constants';
-// import { FilterButton } from 'components/FilterButton/FilterButton';
-import {
-  getContactsByAlphabetStatus,
-  // getFilterStatus,
-} from 'redux/filter/selectors';
+import { useDispatch } from 'react-redux';
+import { useGetAllContactsQuery } from 'redux/contacts/contactsSlice';
+import { changeFilter } from 'redux/filter/filterSlice';
 
 export const Filter = () => {
+  const { data, isLoading } = useGetAllContactsQuery();
+
   const [filter, setFilter] = useState('');
   const dispatch = useDispatch();
-
-  // const FilterStatus = useSelector(getFilterStatus);
-  const alphabetStatus = useSelector(getContactsByAlphabetStatus);
 
   const debounceFilter = useMemo(() => {
     return debounce(query => dispatch(changeFilter(query)), 500);
@@ -30,50 +21,46 @@ export const Filter = () => {
     debounceFilter(value);
   };
 
-  // const handleStatusFilter = filter => dispatch(setStatusFilter(filter));
-
-  const handleAlphabetStatus = () => {
-    return dispatch(toggleAlphabetStatus(!alphabetStatus));
+  const handleReset = () => {
+    setFilter('');
+    dispatch(changeFilter(''));
   };
 
+  const shouldShown = !isLoading && data.length > 0;
+
   return (
-    <>
-      <Label htmlFor="filter">Find contacts by name</Label>
-
-      {/* <FilterButton
-        type="button"
-        selected={FilterStatus === statusFilters.all}
-        onClick={() => handleStatusFilter(statusFilters.all)}
-      >
-        All
-      </FilterButton>
-      <FilterButton
-        type="button"
-        selected={FilterStatus === statusFilters.favorite}
-        onClick={() => handleStatusFilter(statusFilters.favorite)}
-      >
-        Fav
-      </FilterButton> */}
-
-      <Label htmlFor="alphabetCheckbox">to Alphabet</Label>
-      <input
-        id="alphabetCheckbox"
-        type="checkbox"
-        checked={alphabetStatus}
-        onChange={handleAlphabetStatus}
-      />
-
-      <Input
-        autoComplete="off"
-        id="filter"
-        type="text"
-        name="filter"
-        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-        title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-        required
-        onChange={handleFilterInput}
-        value={filter}
-      />
-    </>
+    shouldShown && (
+      <InputGroup>
+        <Input
+          _focusVisible={{
+            borderColor: 'orange.200',
+            boxShadow: '0px 1px 0px 0px #fbd38d',
+          }}
+          autoComplete="off"
+          pl="1.5rem"
+          variant="flushed"
+          type="text"
+          name="filter"
+          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+          required
+          onChange={handleFilterInput}
+          value={filter}
+          placeholder="Find contacts by name"
+        />
+        <InputRightElement width="4.5rem">
+          {filter.length > 0 && (
+            <Button
+              h="1.75rem"
+              size="sm"
+              variant={'ghost'}
+              onClick={handleReset}
+            >
+              <CloseIcon />
+            </Button>
+          )}
+        </InputRightElement>
+      </InputGroup>
+    )
   );
 };

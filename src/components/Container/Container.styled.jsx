@@ -1,9 +1,17 @@
 import styled from 'styled-components';
 
 export const ContentContainer = styled.div`
-  width: 320px;
-  margin: 0 auto;
-  padding: 0 ${p => p.theme.space[3]}px;
-
-  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  @media screen and (max-width: 767px) {
+    width: 320px;
+    padding: 0px 20px;
+  }
+  @media screen and (min-width: 768px) {
+    width: 768px;
+    padding: 0px 16px;
+  }
+  @media screen and (min-width: 1200px) {
+    width: 1200px;
+  }
 `;

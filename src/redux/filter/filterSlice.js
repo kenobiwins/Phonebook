@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const filterInitialState = {
   filterValue: '',
   // filterStatus: statusFilters.all,
-  toAlphabet: false,
+  toAlphabet: true,
 };
 
 const filterSlice = createSlice({
@@ -17,12 +17,11 @@ const filterSlice = createSlice({
     // setStatusFilter(state, action) {
     //   state.filterStatus = action.payload;
     // },
-    toggleAlphabetStatus(state, action) {
-      state.toAlphabet = action.payload;
-    },
+    // toggleAlphabetStatus(state, action) {
+    //   state.toAlphabet = action.payload;
+    // },
   },
 });
 
-export const { changeFilter, setStatusFilter, toggleAlphabetStatus } =
-  filterSlice.actions;
+export const { changeFilter, setStatusFilter } = filterSlice.actions;
 export const filterReducer = filterSlice.reducer;

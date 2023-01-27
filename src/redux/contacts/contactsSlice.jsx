@@ -58,7 +58,6 @@ export const contactsApi = createApi({
     }),
     editContact: builder.mutation({
       query: ({ id, data }) => {
-        console.log(id, data);
         return {
           url: `/contacts/${id}`,
           method: 'PATCH',
