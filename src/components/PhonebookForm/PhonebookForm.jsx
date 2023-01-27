@@ -5,6 +5,7 @@ import {
   useGetAllContactsQuery,
 } from 'redux/contacts/contactsSlice';
 import { Button, Input, Stack, useToast } from '@chakra-ui/react';
+import { userContactSchema } from 'Validations/UserValidation';
 
 export const PhonebookForm = memo(() => {
   const [name, setName] = useState('');
@@ -25,7 +26,12 @@ export const PhonebookForm = memo(() => {
     }
   };
 
-  const handleSubmit = newUser => {
+  const handleSubmit = async newUser => {
+    const isValid = await userContactSchema.isValid(newUser);
+
+    if (!isValid) {
+      return 'invalid';
+    }
     const usersInclude = contacts.some(el => el.name === newUser.name);
 
     if (usersInclude) {
@@ -44,10 +50,14 @@ export const PhonebookForm = memo(() => {
     });
   };
 
-  const submitForm = e => {
+  const submitForm = async e => {
     e.preventDefault();
-    const newUser = handleSubmit({ name, number });
+    const newUser = await handleSubmit({ name, number });
 
+    if (newUser === 'invalid') {
+      console.log('invalid');
+      return;
+    }
     if (newUser === null) {
       return toast({
         title: `Wooops`,

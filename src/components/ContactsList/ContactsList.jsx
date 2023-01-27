@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Box, Button, Text } from '@chakra-ui/react';
 import { ContactsListItem } from 'components/ContactsListItem/ContactsListItem';
 import { statusFilters } from 'constants/statusFilter.constants';
@@ -77,4 +78,8 @@ export const ContactsList = ({ redirect }) => {
       {error && <p>Wooops :(</p>}
     </Box>
   );
+};
+
+ContactsList.propTypes = {
+  redirect: PropTypes.func,
 };

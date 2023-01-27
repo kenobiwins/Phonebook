@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 const { ViewIcon, ViewOffIcon } = require('@chakra-ui/icons');
@@ -34,3 +35,7 @@ export function PasswordInput({ name }) {
     </InputGroup>
   );
 }
+
+PasswordInput.propTypes = {
+  name: PropTypes.string,
+};

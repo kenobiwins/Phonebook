@@ -23,7 +23,7 @@ export const SharedLayout = () => {
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          maxW="md"
+          maxW="lg"
           mr="auto"
           ml="auto"
           p={3}

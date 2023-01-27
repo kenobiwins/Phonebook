@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {
   Button,
   FormControl,
@@ -131,3 +132,13 @@ export function EditContact({ isOpen, onClose, contact }) {
     </Modal>
   );
 }
+
+EditContact.propTypes = {
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func,
+  contact: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    number: PropTypes.string.isRequired,
+  }),
+};

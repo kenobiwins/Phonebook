@@ -1,4 +1,5 @@
 import { Button, Container, Input, useToast } from '@chakra-ui/react';
+import { userLogInSchema } from 'Validations/UserValidation';
 import { PasswordInput } from 'components/PasswordInput/PasswordInput';
 import { useDispatch } from 'react-redux';
 import { logIn } from 'redux/auth/operations';
@@ -6,16 +7,24 @@ import { logIn } from 'redux/auth/operations';
 export const LoginForm = () => {
   const dispatch = useDispatch();
   const toast = useToast();
-  const handleSubmit = e => {
+
+  const handleSubmit = async e => {
     e.preventDefault();
     const { email, password } = e.currentTarget;
 
-    dispatch(
-      logIn({
-        email: email.value,
-        password: password.value,
-      })
-    )
+    const user = {
+      email: email.value,
+      password: password.value,
+    };
+
+    const isValid = await userLogInSchema.isValid(user);
+
+    if (!isValid) {
+      console.log('invalide');
+      return;
+    }
+
+    dispatch(logIn({ ...user }))
       .then(data => {
         if (data.error) {
           throw new Error('woops');

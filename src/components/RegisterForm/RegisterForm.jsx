@@ -1,4 +1,5 @@
 import { Button, Container, Input, useToast } from '@chakra-ui/react';
+import { userRegestrationSchema } from 'Validations/UserValidation';
 import { PasswordInput } from 'components/PasswordInput/PasswordInput';
 import { useDispatch } from 'react-redux';
 import { register } from 'redux/auth/operations';
@@ -7,17 +8,24 @@ export const RegisterForm = () => {
   const dispatch = useDispatch();
   const toast = useToast();
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const { name, email, password } = e.currentTarget;
 
-    dispatch(
-      register({
-        name: name.value,
-        email: email.value,
-        password: password.value,
-      })
-    )
+    const newUser = {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+    };
+
+    const isValid = await userRegestrationSchema.isValid(newUser);
+
+    if (!isValid) {
+      console.log('invalide');
+      return;
+    }
+
+    dispatch(register({ ...newUser }))
       .then(data => {
         if (data.error) {
           throw new Error('woops');
@@ -41,7 +49,6 @@ export const RegisterForm = () => {
           position: 'top-right',
         });
       });
-    e.currentTarget.reset();
   };
 
   return (
